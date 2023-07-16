@@ -44,3 +44,22 @@ npx cypress open
 ```
 
 [docker]: https://www.docker.com/
+
+Prisma Error:
+
+When running it on Apple M1 silicon, you'll get a Prisma Client error.
+
+Update the schema.prisma file's ```generator client``` section with below snippet:
+
+```
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native","darwin"]
+}
+```
+
+```
+npx prisma generate
+```
+
+run above command if you get prisma error. 
