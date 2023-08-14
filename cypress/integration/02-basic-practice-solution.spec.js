@@ -40,16 +40,23 @@ describe('Basic Practice', () => {
           .should('exist');
       });
 
-      it('should show only items that match the filter', () => {
+      it.only('should show only items that match the filter', () => {
         cy.get('[data-test="items-unpacked"]').find('label').should('have.length', 5);
 
         cy.get('[data-test="filter-items"]').type('Tooth');
         cy.get('[data-test="items-unpacked"]').find('label').should('have.length', 2);
 
+        cy.get('[data-test="items-unpacked"] li').each(($item) => {
+          expect($item.text()).to.include('Tooth');
+        });
+
         cy.get('[data-test="filter-items"]').clear();
 
         cy.get('[data-test="filter-items"]').type('Hoodie');
         cy.get('[data-test="items-packed"]').find('label').should('have.length', 1);
+        cy.get('[data-test="items-packed"] li').should('have.length', 1).each(($item) => {
+          expect($item.text()).to.include('Hoodie');
+        });
       });
     });
 
