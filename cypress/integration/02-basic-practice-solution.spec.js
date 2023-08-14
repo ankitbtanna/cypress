@@ -40,7 +40,7 @@ describe('Basic Practice', () => {
           .should('exist');
       });
 
-      it.only('should show only items that match the filter', () => {
+      it('should show only items that match the filter', () => {
         cy.get('[data-test="items-unpacked"]').find('label').should('have.length', 5);
 
         cy.get('[data-test="filter-items"]').type('Tooth');
@@ -88,6 +88,16 @@ describe('Basic Practice', () => {
         cy.get('[data-test="items-unpacked"]').find('label').should('have.length', 3);
         cy.get('[data-test="items-packed"]').find('label').should('have.length', 0);
       });
+
+      it.only('should remove all items from unpacked list one by one', () => {
+        cy.get('[data-test="items-unpacked"]').find('label').should('have.length', 4);
+
+        cy.get('[data-test="items-unpacked"] li').each(($item) => {
+          cy.wrap($item).find('[data-test="remove"]').click();
+        });
+
+        cy.get('[data-test="items-unpacked"]').find('label').should('have.length', 0);
+      })
     })
 
     context('Mark all as unpacked', () => {
