@@ -34,15 +34,16 @@ describe('Sign Up', () => {
     cy.get('[data-test="sign-up-email"]:invalid').should('have.length', 1);
   });
 
-  it.only('should require that the email actually be an email address', () => {
+  it('should require that the email actually be an email address', () => {
     cy.get('[data-test="sign-up-email"]').type('not-an-email');
     cy.get('[data-test="sign-up"]').click();
     cy.get('[data-test="sign-up-email"]:invalid').should('have.length', 1).invoke('prop', 'validationMessage').should('equal', 'Please include an \'@\' in the email address. \'not-an-email\' is missing an \'@\'.');
+    cy.get('[data-test="sign-up-email"]:invalid').should('have.length', 1).invoke('prop', 'validity').its('typeMismatch').should('be.true');
   });
 
-  it('should require a password when the email is present', () => {
-    cy.get('[data-test="sign-up-email"]').type('abc@gmail.com');
+  it.only('should require a password when the email is present', () => {
+    cy.get('[data-test="sign-up-email"]').type('abc@gmail.com{enter}');
     cy.get('[data-test="sign-up"]').click();
-    cy.get('[data-test="sign-up-password"]:invalid').should('have.length', 1);
+    cy.get('[data-test="sign-up-password"]:invalid').should('have.length', 1).invoke('prop', 'validity').its('valueMissing').should('be.true');
   });
 });
