@@ -18,7 +18,7 @@ describe('Initial Page', () => {
     cy.location('pathname').should('equal', '/echo-chamber/sign-in');
   });
 
-  it.only('should navigate to "/sign-up" when you click the "Sign Up" button', () => {
+  it('should navigate to "/sign-up" when you click the "Sign Up" button', () => {
     cy.get('[data-test="sign-up"]').click();
     cy.location('pathname').should('equal', '/echo-chamber/sign-up');
   });
@@ -34,13 +34,13 @@ describe('Sign Up', () => {
     cy.get('[data-test="sign-up-email"]:invalid').should('have.length', 1);
   });
 
-  it('should require that the email actually be an email address', () => {
+  it.only('should require that the email actually be an email address', () => {
     cy.get('[data-test="sign-up-email"]').type('not-an-email');
     cy.get('[data-test="sign-up"]').click();
-    cy.get('[data-test="sign-up-email"]:invalid').should('have.length', 1);
+    cy.get('[data-test="sign-up-email"]:invalid').should('have.length', 1).invoke('prop', 'validationMessage').should('equal', 'Please include an \'@\' in the email address. \'not-an-email\' is missing an \'@\'.');
   });
 
-  it.only('should require a password when the email is present', () => {
+  it('should require a password when the email is present', () => {
     cy.get('[data-test="sign-up-email"]').type('abc@gmail.com');
     cy.get('[data-test="sign-up"]').click();
     cy.get('[data-test="sign-up-password"]:invalid').should('have.length', 1);
